@@ -1,5 +1,6 @@
+from django.core.validators import FileExtensionValidator
 from rest_framework import serializers
-
+from django.utils.translation import gettext_lazy as _
 from api.models import TestRunRequest, TestFilePath, TestEnvironment
 
 
@@ -53,3 +54,8 @@ class TestEnvironmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = TestEnvironment
         fields = ('id', 'name')
+
+class TestCaseUploadSerializer(serializers.Serializer):
+    test_file=serializers.FileField(
+        validators=[FileExtensionValidator(allowed_extensions=['py'])]
+    )

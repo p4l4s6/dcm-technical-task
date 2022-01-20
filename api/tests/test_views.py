@@ -152,3 +152,26 @@ class TestAssetsAPIView(TestCase):
         response = self.client.get(self.url)
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertEqual({'k': 'v'}, response.json())
+
+
+class TestFileUploadView(TestCase):
+    def setUp(self) -> None:
+        self.valid_file = 'sample-tests/test_success.py'
+        self.invalid_file = 'sample-tests/test.png'
+        self.url= reverse('upload_test_case')
+
+    def test_post_empty_file(self):
+        response = self.client.post(self.url, data={})
+        self.assertEqual(status.HTTP_400_BAD_REQUEST, response.status_code)
+
+    def test_post_invalid_file(self):
+        response = self.client.post(self.url, data={
+            'test_file':open(self.invalid_file, 'rb')
+        })
+        self.assertEqual(status.HTTP_400_BAD_REQUEST, response.status_code)
+
+    def test_post_valid_file(self):
+        response = self.client.post(self.url, data={
+            'test_file': open(self.valid_file, 'rb')
+        })
+        self.assertEqual(status.HTTP_201_CREATED, response.status_code)

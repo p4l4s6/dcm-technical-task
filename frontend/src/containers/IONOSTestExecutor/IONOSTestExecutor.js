@@ -27,12 +27,7 @@ class IONOSTestExecutor extends Component {
   interval = null
 
   componentDidMount () {
-    axios.get('assets').then(response => {
-      this.setState({assets: response.data})
-    }).catch(error => {
-      this.setState({error: true})
-    })
-
+    this.refreshTestList()
     this.interval = setInterval(this.refreshList, 1000);
     this.refreshList()
   }
@@ -48,6 +43,14 @@ class IONOSTestExecutor extends Component {
       }
     })
     return val;
+  }
+
+  refreshTestList=()=>{
+    axios.get('assets').then(response => {
+      this.setState({assets: response.data})
+    }).catch(error => {
+      this.setState({error: true})
+    })
   }
 
   refreshList = () => {
@@ -123,11 +126,11 @@ class IONOSTestExecutor extends Component {
               testPath={this.state.testPath}
               testPathError={this.state.testPathError}
               assets={this.state.assets}
-
               requesterChanged={e => this.setState({ requester: e.target.value?.toString() })}
               envChanged={e => this.setState({ env: e.target.value?.toString() })}
               testPathChanged={this.handleTestPathChanged}
               submitTest={this.submitTest}
+              refeshTest={this.refreshTestList}
           ></AddNewRequest>
           <TestExecutionTable items={this.state.items} viewItemDetails={this.viewItemDetails}></TestExecutionTable>
       </Aux>
