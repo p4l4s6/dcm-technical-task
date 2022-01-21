@@ -55,7 +55,8 @@ class TestEnvironmentSerializer(serializers.ModelSerializer):
         model = TestEnvironment
         fields = ('id', 'name')
 
+
 class TestCaseUploadSerializer(serializers.Serializer):
-    test_file=serializers.FileField(
+    test_file = serializers.FileField(
         validators=[FileExtensionValidator(allowed_extensions=['py'])]
     )

@@ -40,7 +40,7 @@ class UploadTestCase(APIView):
         serializer = TestCaseUploadSerializer(data=request.data)
         if serializer.is_valid():
             test_file = serializer.validated_data['test_file']
-            file_path = f"sample-tests/test_{test_file.name}_{random.randint(1000, 9999)}.py"
+            file_path = f"sample-tests/test_{test_file.name.rsplit('.', 1 )[ 0 ]}_{random.randint(1000, 9999)}.py"
             destination = open(file_path, 'wb+')
             for chunk in test_file.chunks():
                 destination.write(chunk)
